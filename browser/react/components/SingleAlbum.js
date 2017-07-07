@@ -4,16 +4,15 @@ import Songs from '../components/Songs';
 
 export default class SingleAlbum extends Component {
 
-  constructor () {
+  constructor() {
     super();
     this.state = {
       album: {}
     };
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const albumId = this.props.match.params.albumId;
-
     axios.get(`/api/albums/${albumId}`)
       .then(res => res.data)
       .then(album => this.setState({
@@ -21,14 +20,29 @@ export default class SingleAlbum extends Component {
       }));
   }
 
-  render () {
+  componentWillReceiveProps(nextProps) {
+    const nextAlbumId = nextProps.match.params.albumId;
+    const currentAlbumId = this.props.match.params.albumId;
+    if (nextAlbumId !== currentAlbumId) {
+      axios.get(`/api/albums/${currentAlbumId}`)
+        .then(res => res.data)
+        .then(album => {
+          this.setState({
+            album
+          })
+        });
+
+    }
+  }
+
+  render() {
     const album = this.state.album;
 
     return (
       <div className="album">
         <div>
-          <h3>{ album.name }</h3>
-          <img src={ album.imageUrl } className="img-thumbnail" />
+          <h3>{album.name}</h3>
+          <img src={album.imageUrl} className="img-thumbnail" />
         </div>
         <Songs songs={album.songs} />
       </div>

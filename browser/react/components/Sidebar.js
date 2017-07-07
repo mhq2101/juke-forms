@@ -26,7 +26,7 @@ const Sidebar = (props) => {
               playlists && playlists.map(playlist => {
                 return (
                 <li className="playlist-item menu-item" key={playlist.id}>
-                  <Link to="FILL_ME_IN">{playlist.name}</Link>
+                  <Link to={`/playlists/${playlist.id}`}>{playlist.name}</Link>
                 </li>
                 )
               })
